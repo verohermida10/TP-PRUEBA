@@ -1,95 +1,142 @@
 const products = [
   {
     id: 1,
-    name: "Auriculares Gamer",
-    price: 120,
-    image: "https://picsum.photos/300/200?random=1"
+    name: "iPhone 15 Pro",
+    description: "256GB Titanio Negro",
+    price: 1800,
+    image:
+      "https://images.unsplash.com/photo-1695048133142-1a20484d2569?q=80&w=1000&auto=format&fit=crop"
   },
+
   {
     id: 2,
-    name: "Smartphone",
-    price: 450,
-    image: "https://picsum.photos/300/200?random=2"
+    name: "PlayStation 5",
+    description: "Consola Sony + DualSense",
+    price: 950,
+    image:
+      "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?q=80&w=1000&auto=format&fit=crop"
   },
+
   {
     id: 3,
-    name: "Notebook",
-    price: 980,
-    image: "https://picsum.photos/300/200?random=3"
+    name: "MacBook Air M3",
+    description: "Laptop ultraliviana 16GB RAM",
+    price: 2400,
+    image:
+      "https://images.unsplash.com/photo-1517336714739-489689fd1ca8?q=80&w=1000&auto=format&fit=crop"
   },
+
   {
     id: 4,
-    name: "Zapatillas Deportivas",
-    price: 85,
-    image: "https://picsum.photos/300/200?random=4"
+    name: "Auriculares Gamer RGB",
+    description: "Sonido envolvente 7.1",
+    price: 120,
+    image:
+      "https://images.unsplash.com/photo-1546435770-a3e426bf472b?q=80&w=1000&auto=format&fit=crop"
+  },
+
+  {
+    id: 5,
+    name: "Smartwatch Pro",
+    description: "Monitoreo cardíaco y GPS",
+    price: 350,
+    image:
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1000&auto=format&fit=crop"
+  },
+
+  {
+    id: 6,
+    name: "Zapatillas Urbanas",
+    description: "Edición limitada streetwear",
+    price: 210,
+    image:
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1000&auto=format&fit=crop"
   }
 ];
 
-const productsContainer = document.getElementById("products-container");
+const container = document.getElementById("products-container");
+const cart = document.getElementById("cart");
+const cartBtn = document.getElementById("cart-btn");
+const closeCart = document.getElementById("close-cart");
 const cartItems = document.getElementById("cart-items");
 const totalElement = document.getElementById("total");
 const cartCount = document.getElementById("cart-count");
 
-const cartBtn = document.getElementById("cart-btn");
-const cartModal = document.getElementById("cart-modal");
-const closeCart = document.getElementById("close-cart");
-
-let cart = [];
+let shoppingCart = [];
 
 function renderProducts() {
   products.forEach(product => {
-    const card = document.createElement("div");
-    card.classList.add("product-card");
 
-    card.innerHTML = `
+    const div = document.createElement("div");
+    div.classList.add("product");
+
+    div.innerHTML = `
       <img src="${product.image}" alt="${product.name}">
+
       <div class="product-info">
         <h3>${product.name}</h3>
+
+        <p class="description">
+          ${product.description}
+        </p>
+
         <p class="price">$${product.price}</p>
+
         <button onclick="addToCart(${product.id})">
           Agregar al carrito
         </button>
       </div>
     `;
 
-    productsContainer.appendChild(card);
+    container.appendChild(div);
   });
 }
 
 function addToCart(id) {
+
   const product = products.find(p => p.id === id);
 
-  cart.push(product);
+  shoppingCart.push(product);
 
   updateCart();
 }
 
 function updateCart() {
+
   cartItems.innerHTML = "";
 
   let total = 0;
 
-  cart.forEach(item => {
+  shoppingCart.forEach(item => {
+
     total += item.price;
 
-    const li = document.createElement("li");
-    li.innerHTML = `
-      ${item.name} - $${item.price}
+    const div = document.createElement("div");
+
+    div.classList.add("cart-item");
+
+    div.innerHTML = `
+      <img src="${item.image}">
+
+      <div>
+        <h4>${item.name}</h4>
+        <p>$${item.price}</p>
+      </div>
     `;
 
-    cartItems.appendChild(li);
+    cartItems.appendChild(div);
   });
 
   totalElement.textContent = total;
-  cartCount.textContent = cart.length;
+  cartCount.textContent = shoppingCart.length;
 }
 
 cartBtn.addEventListener("click", () => {
-  cartModal.classList.add("active");
+  cart.classList.add("active");
 });
 
 closeCart.addEventListener("click", () => {
-  cartModal.classList.remove("active");
+  cart.classList.remove("active");
 });
 
 renderProducts();
